@@ -38,6 +38,7 @@ const About = () => {
         <title>About</title>
         <meta name="description" content="About Owen" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex"></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="about-page">

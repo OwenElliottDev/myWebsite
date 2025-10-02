@@ -155,6 +155,11 @@ function processCommand({
     return 'Logging you out, goodbye!';
   }
 
+  if (command == 'connect') {
+    window.open('https://www.linkedin.com/in/owen-elliott-345254166/', '_blank');
+    return "Let's connect!";
+  }
+
   return "Error: '" + command + "' is not a known command.";
 }
 

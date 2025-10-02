@@ -8,7 +8,8 @@ Available commands:
     serve - Serve a given '.page' file
     clear - Clear the terminal
     useradd - Adds a new user
-    logout - logs you out
+    logout - Logs you out
+    connect - Let's connect
 
 Navigation:
     Use the up and down arrows to cycle through previous commands.

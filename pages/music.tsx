@@ -6,6 +6,7 @@ const Music = () => {
         <title>Music</title>
         <meta name="description" content="Owen's musical endeavours" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex"></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="music-page">

@@ -57,6 +57,7 @@ const LinksToOtherSites = () => {
         <title>Links</title>
         <meta name="description" content="Links for Owen's related accounts" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex"></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="links-title">Links</h1>
