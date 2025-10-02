@@ -31,6 +31,7 @@ const Articles = () => {
         <meta name="og:title" content="Articles" />
         <meta name="og:description" content="Landing page for Owen's articles" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex"></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="articles-title">Articles</h1>

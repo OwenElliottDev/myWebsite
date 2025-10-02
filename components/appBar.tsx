@@ -9,11 +9,11 @@ interface AppBarElementData {
 
 const appBarElements: AppBarElementData[] = [
   { text: 'Home', link: '/' },
-  { text: 'About', link: '/about' },
+  // { text: 'About', link: '/about' },
   { text: 'Articles', link: '/articles' },
   { text: 'Papers', link: '/papers' },
-  { text: 'Music', link: '/music' },
-  { text: 'Links', link: '/links' },
+  // { text: 'Music', link: '/music' },
+  // { text: 'Links', link: '/links' },
 ];
 
 const AppBarElement = ({

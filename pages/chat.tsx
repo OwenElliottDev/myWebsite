@@ -194,6 +194,7 @@ const Chat = () => {
           <meta name="og:title" content="Chat" />
           <meta name="og:description" content="Peer-to-peer chat interface with WebRTC" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="robots" content="noindex"></meta>
         </Head>
         <h1>Enter a room ID:</h1>
         <input

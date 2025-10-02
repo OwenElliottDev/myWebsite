@@ -22,9 +22,9 @@ const loginMessage = (ip: string, username: string) => {
         <p className="typed typed1">{`logged in as: ${username ? username : 'guest'}`}</p>
         <p className="typed typed2">{`###################################################################################################`}</p>
         <p className="typed typed3">{`#                                    Welcome to My Website!                                       #`}</p>
-        <p className="typed typed4">{`#                              Owen's Server release 1.0.0 (beta)                                 #`}</p>
+        <p className="typed typed4">{`#                              Owen's Server release 0.3.1 (beta)                                 #`}</p>
         <p className="typed typed5">{`#                                                                                                 #`}</p>
-        <p className="typed typed6">{`# You are on the latest stable release                                                            #`}</p>
+        <p className="typed typed6">{`# You are on the latest release                                                                   #`}</p>
         <p className="typed typed7">{`# Run 'help' for tips on getting started                                                          #`}</p>
         <p className="typed typed8">{`# For any bugs or issues with the release please reach out on GitHub                              #`}</p>
         <p className="typed typed9">{`# Current login: ${datetime} from ${ip} ${' '.repeat(
@@ -39,9 +39,9 @@ const loginMessage = (ip: string, username: string) => {
       <p className="typed typed1">{`logged in as: ${username ? username : 'guest'}`}</p>
       <p className="typed typed2">{`#######################################################`}</p>
       <p className="typed typed3">{`#               Welcome to My Website!                #`}</p>
-      <p className="typed typed4">{`#         Owen's Server release 1.0.0 (beta)          #`}</p>
+      <p className="typed typed4">{`#         Owen's Server release 0.3.1 (beta)          #`}</p>
       <p className="typed typed5">{`#                                                     #`}</p>
-      <p className="typed typed6">{`# You are on the latest stable release                #`}</p>
+      <p className="typed typed6">{`# You are on the latest release                       #`}</p>
       <p className="typed typed7">{`# Run 'help' for tips on getting started              #`}</p>
       <p className="typed typed8">{`# Current login: ${datetime} from ${ip} ${' '.repeat(
         14 - ip.length,
