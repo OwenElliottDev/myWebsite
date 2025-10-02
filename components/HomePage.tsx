@@ -129,7 +129,7 @@ const HomePage = () => {
             </a>
           ))}
         </div>
-        <Link href="/projects" className="view-all-link">
+        <Link href="https://github.com/OwenElliottDev" className="view-all-link">
           View all projects →
         </Link>
       </section>
