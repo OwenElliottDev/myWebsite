@@ -45,7 +45,7 @@ export interface HomeScreenState {
 }
 
 const initialState: HomeScreenState = {
-  isCLI: true,
+  isCLI: false,
 };
 
 export const homepageSlice = createSlice({
