@@ -9,6 +9,15 @@ export interface ArticleMetadata {
 
 const articleData = new Map<string, ArticleMetadata>();
 
+articleData.set('unbound-docker', {
+  title: 'Dockerising Unbound DNS',
+  route: 'articles/unbound-docker',
+  displayImageURL: '/article_assets/unbound-docker/hero.png',
+  summary: 'Creating a small docker container for an updated unbound.',
+  author: 'Owen Elliott',
+  tags: 'Networking, DNS, self-hosting, privacy',
+});
+
 articleData.set('ui-ux-for-vector-search', {
   title: 'Rethinking Vector Search Experiences',
   route: 'articles/ui-ux-for-vector-search',
