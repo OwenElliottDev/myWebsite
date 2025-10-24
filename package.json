@@ -16,6 +16,8 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "^9.26.0",
     "eslint-config-next": "^15.3.2",
+    "libp2p": "^2.1.8",
+    "multiformats": "^13.4.1",
     "next": "^15.3.2",
     "next-redux-wrapper": "^8.1.0",
     "react": "^19.1.0",
