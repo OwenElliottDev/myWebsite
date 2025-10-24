@@ -32,37 +32,37 @@ const Contemplation = () => {
       <div className="article">
         <ArticleBlock>
           {`
-# Dockerising Unbound Recursive DNS
+# Dockerising Unbound for Local Recursive DNS
 
-There is nothing more satisfying than building something to solves a personal need, I recently created [unbound-docker](https://github.com/OwenElliottDev/unbound-docker) to solve my challenges running Unbound as a self hosted recursive Domain Name Server (DNS) resolver alongside Pi-Hole in a docker compose.
+There is nothing more satisfying than building something to solves a personal need, I recently created [unbound-docker](https://github.com/OwenElliottDev/unbound-docker) to solve my challenges running Unbound as a self hosted recursive Domain Name Server (DNS) resolver alongside Pi-Hole in a Docker Compose. [unbound-docker](https://github.com/OwenElliottDev/unbound-docker) is only \`7MB\` to pull (compressed).
 
-I was downloading the images for one of the Conceptual Captions datasets for a different project and I noticed that is was slamming my Pi-Hole with over 500 QPS and over 8 million DNS queries over the download process. My poor Raspberry Pi was out of memory with 100% of its swap in use as well, I later rebooted it to bring it back to life but it took over an hour to boot up as it was loading all the logged requests from when I was downloading.
+I was downloading the images for one of the Conceptual Captions datasets for a different project and I noticed that it was slamming my Pi-Hole with over 500 QPS and 8 million DNS queries during the download process. My poor Raspberry Pi was out of memory with 100% of its swap in use as well. I later rebooted it to bring it back to life but it took over an hour to boot up as it was loading all the logged requests from when I was downloading the dataset.
 
-I also have a much bigger home server so I thought its probably about time to move Pi-Hole over to that, I quickly ran into the issue of wanting to run Unbound for DNS resolution with the Pi-Hole docker container. There are a few Unbound docker containers out there but they seemed to be mostly unmaintained and have all the configs hard coded. Unbounds latest release patches a domain hijacking attack (\`CVE-2025-11411\`), while its unlikely to affect a local setup which isn't exposed to the public internet, I always like to be on top of my security patches just in case.
+I also have a much bigger home server so I thought it was probably about time to move Pi-Hole over to that. I quickly ran into the issue of wanting to run Unbound for DNS resolution with the Pi-Hole Docker container. There are a few Unbound Docker containers out there but they looked to be mostly unmaintained and contained hard coded configurations. Unbound's latest release patches a domain hijacking attack (\`CVE-2025-11411\`) and while it's unlikely to affect a local setup which isn't exposed to the public internet, I always like to be on top of my security patches just in case.
 
 So this necessitated the creation of my own container for Unbound, [owenelliottdev/unbound](https://hub.docker.com/r/owenelliottdev/unbound).
 
-In this article we will cover:
+This article will cover:
 + What Unbound is, and why you might want it
 + How to build a container for Unbound
     + Building Unbound from source
     + Unbound configuration for performance and security
-+ DNS vulnerabilities and docker networking
++ DNS vulnerabilities and Docker networking
     + Integration with Pi-Hole 
 
 ## What is Unbound and why would you want it?
 
-Unbound is an open-source recursive DNS resolver, it is distinct from public DNS services (like Google DNS) or your ISP's default resolver in that it only talks to _authoritative_ name servers. Most DNS servers are caching recursive resolvers, meaning they store a cache of domain names and IP addresses, anything that isn't in their cache is resolved recursively by talking to the authoritative name servers. Authoritative name servers are special servers that are the authority on all domains in a zone. 
+Unbound is an open-source recursive DNS resolver. It is distinct from public DNS services (like Google DNS) or your ISP's default resolver in that it only talks to _authoritative_ name servers. Most DNS servers are caching recursive resolvers, meaning they store a cache of domain names and IP addresses; anything that isn't in their cache is resolved recursively by talking to the authoritative name servers. Authoritative name servers are special servers that are the authority on all domains in a zone. 
 
 Hosting your own recursive solver has a few benefits:
-+ Privacy: It cuts out a middle man (e.g. Google or your ISP) who gets to see every domain you visit and can use it for advertising.
-+ Interference: A classic way that governments and companies control what you see is by blocking the resolution of domains or redirecting them to other addresses.
-+ Security: Public DNS caching servers are also a prime target for attackers. If an attack managed to poisen the cache on something like Google's DNS then millions of users could be routed to malicious sites. Having your own recursive DNS reduces the risk of caching poisening.
-+ Speed (sometimes): When you have a domain in your cache on Unbound then the resolution is nearly instant, potentially hundreds or thousands of times faster than public DNS. However, when you don't have an entry in the cache it can be much slower than a public DNS as it has to do a lot of back and forth to resolve the domain recursively. In my experience this is barely noticable though.
++ __Privacy:__ It cuts out a middle man (e.g. Google or your ISP) who gets to see every domain you visit and can use it for advertising.
++ __Interference:__ A classic way that governments and companies control what you see is by blocking the resolution of domains or redirecting them to other addresses.
++ __Security:__ Public DNS caching servers are also a prime target for attackers. If an attack managed to poison the cache on something like Google's DNS then millions of users could be routed to malicious sites. Having your own recursive DNS reduces the risk of caching poisoning.
++ __Speed (sometimes):__ When you have a domain in your cache on Unbound the resolution is nearly instant, potentially hundreds or thousands of times faster than public DNS. However, when you don't have an entry in the cache it can be much slower than a public DNS as it has to do a lot of back and forth to resolve the domain recursively. Though, in my experience this is barely noticeable though.
 
-## Making a Small Container
+## Making a small container
 
-For a functioning instance of Unbound, there isn't much you need - just the binaries and configs with Unbound requires. I wanted to focus on providing a sensible, secure set of defaults, flexibility for users to customise some aspects of the config, having the latest release, and having a small bloat-free container.
+For a functioning instance of Unbound, there isn't much you need - just the binaries and configs that Unbound requires. I wanted to focus on providing a sensible set of defaults, flexibility for users to customise some aspects of the config, having the latest release of Unbound, and having a small bloat-free container.
 
 ### Multi-stage build
 
@@ -74,16 +74,18 @@ For a functioning instance of Unbound, there isn't much you need - just the bina
 RUN apk add --no-cache build-base git libevent-dev openssl-dev expat-dev flex bison
 
 
-RUN git clone --branch release-1.24.1 https://github.com/NLnetLabs/unbound.git \
-    && cd unbound \
-    && ./configure --with-libevent \
-    && make \
+RUN git clone --branch release-1.24.1 https://github.com/NLnetLabs/unbound.git \\
+    && cd unbound \\
+    && ./configure --with-libevent \\
+    && make \\
     && make install`}
         </CodeBlock>
         <ArticleBlock>
-          {`#### Making it customisable
+          {`The build stage installs all the tools and libraries that we require to build Unbound. In the next stage we can just extract the output of the build and leave behind all the tooling we no longer need, resulting in a much smaller image.
+          
+#### Making it customisable
 
-Instead of making the entrypoint be Unbound directly, the entrypoint is a bash script that created the Unbound configuration before starting it. This means that users can change some of the configurations using environment variables to tune the Unbound settings for their platform/requirements.`}
+Instead of making the entrypoint be Unbound directly, the entrypoint is a bash script that creates the Unbound configuration before starting it. This means that users can change some of the configurations using environment variables to tune the Unbound settings for their platform/requirements.`}
         </ArticleBlock>
         <CodeBlock language="dockerfile">
           {`FROM alpine:latest
@@ -175,7 +177,7 @@ exec /usr/local/sbin/unbound -d -c /etc/unbound/unbound.conf
 `}
         </CodeBlock>
         <ArticleBlock>
-          {`Most settings in the config are hardcoded, there isn't a strong need to change them for most use cases and they are sensible defaults from a security perspective. To accept queries from outside of the container we need to listen on all interfaces (\`0.0.0.0\`), while not normally recommended it is acceptable in this instance because we can control the networking of the container from the outside to limit access and avoid exposing the DNS to bad actors.
+          {`The majority of settings in the config are hardcoded as there isn't a strong need to change them for most use cases and they are sensible defaults from a security perspective. To accept queries from outside of the container we need to listen on all interfaces (\`0.0.0.0\`). While not normally recommended it is acceptable in this instance because we can control the networking of the container from the outside to limit access and avoid exposing the DNS to bad actors.
 
 The configurable variables are mostly related to performance and DNS resolution behaviour (that isn't heavily security related).
 
@@ -194,9 +196,9 @@ Now we have a container that we can build it's pretty easy to run it:`}
     restart: unless-stopped`}
         </CodeBlock>
         <ArticleBlock>
-          {`Anything that sends DNS queries to unbound:5335 or localhost:5335 on the host machine will have their queries resolved by Unbound. This configuration makes unbound accessible on the LAN, it's important that this port is not fowarded to the public internet; exposing our DNS would make us vulnerable to DNS amplification attacks and cache snooping.
+          {`Anything that sends DNS queries to unbound:5335 or localhost:5335 on the host machine will have their queries resolved by Unbound. This configuration makes Unbound accessible on the LAN. It's important that this port is not forwarded to the public internet; exposing our DNS would make us vulnerable to DNS amplification attacks and cache snooping.
 
-As I mentioned earlier, we can lock down our networking with docker to make things more secure. If we run Unbound on a network in docker then we can add other containers to that network to let them talk to Unbound without having to expose Unbound to the host machine.`}
+As I mentioned earlier, we can lock down our networking with Docker to make things more secure. If we run Unbound on a network in Docker then we can add other containers to that network to let them talk to Unbound without having to expose Unbound to the host machine.`}
         </ArticleBlock>
         <CodeBlock language="yaml">
           {`services:
