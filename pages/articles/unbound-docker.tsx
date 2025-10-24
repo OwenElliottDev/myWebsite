@@ -34,7 +34,7 @@ const Contemplation = () => {
           {`
 # Dockerising Unbound for Local Recursive DNS
 
-There is nothing more satisfying than building something to solves a personal need, I recently created [unbound-docker](https://github.com/OwenElliottDev/unbound-docker) to solve my challenges running Unbound as a self hosted recursive Domain Name Server (DNS) resolver alongside Pi-Hole in a Docker Compose. [unbound-docker](https://github.com/OwenElliottDev/unbound-docker) is only \`7MB\` to pull (compressed).
+There is nothing more satisfying than building something to solve a personal need, I recently created [unbound-docker](https://github.com/OwenElliottDev/unbound-docker) to solve my challenges running Unbound as a self hosted recursive Domain Name Server (DNS) resolver alongside Pi-Hole in a Docker Compose. [unbound-docker](https://github.com/OwenElliottDev/unbound-docker) is only \`7MB\` to pull (compressed).
 
 I was downloading the images for one of the Conceptual Captions datasets for a different project and I noticed that it was slamming my Pi-Hole with over 500 QPS and 8 million DNS queries during the download process. My poor Raspberry Pi was out of memory with 100% of its swap in use as well. I later rebooted it to bring it back to life but it took over an hour to boot up as it was loading all the logged requests from when I was downloading the dataset.
 
