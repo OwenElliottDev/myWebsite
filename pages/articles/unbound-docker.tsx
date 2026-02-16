@@ -5,9 +5,6 @@ import React from 'react';
 const ArticleBlock = React.lazy(() =>
   import('@/components/articleElements').then((module) => ({ default: module.ArticleBlock })),
 );
-const CodeBlock = React.lazy(() =>
-  import('@/components/articleElements').then((module) => ({ default: module.CodeBlock })),
-);
 
 const HERO_IMAGE = '/article_assets/unbound-docker/hero.png';
 
@@ -48,11 +45,11 @@ This article will cover:
     + Building Unbound from source
     + Unbound configuration for performance and security
 + DNS vulnerabilities and Docker networking
-    + Integration with Pi-Hole 
+    + Integration with Pi-Hole
 
 ## What is Unbound and why would you want it?
 
-Unbound is an open-source recursive DNS resolver. It is distinct from public DNS services (like Google DNS) or your ISP's default resolver in that it only talks to _authoritative_ name servers. Most DNS servers are caching recursive resolvers, meaning they store a cache of domain names and IP addresses; anything that isn't in their cache is resolved recursively by talking to the authoritative name servers. Authoritative name servers are special servers that are the authority on all domains in a zone. 
+Unbound is an open-source recursive DNS resolver. It is distinct from public DNS services (like Google DNS) or your ISP's default resolver in that it only talks to _authoritative_ name servers. Most DNS servers are caching recursive resolvers, meaning they store a cache of domain names and IP addresses; anything that isn't in their cache is resolved recursively by talking to the authoritative name servers. Authoritative name servers are special servers that are the authority on all domains in a zone.
 
 Hosting your own recursive solver has a few benefits:
 + __Privacy:__ It cuts out a middle man (e.g. Google or your ISP) who gets to see every domain you visit and can use it for advertising.
@@ -67,10 +64,10 @@ For a functioning instance of Unbound, there isn't much you need - just the bina
 ### Multi-stage build
 
 #### Building from source
-\`unbound-docker\` uses a multi-stage build on the Alpine Linux image which is known for being a small container. Unbound is also built with \`libevent\` which enables efficient handling of many concurrent connections. Using \`libevent\` with a higher value for \`outgoing-range\` improves concurrency for outgoing DNS queries, especially on multi-CPU machines`}
-        </ArticleBlock>
-        <CodeBlock language="dockerfile">
-          {`FROM alpine:latest AS builder
+\`unbound-docker\` uses a multi-stage build on the Alpine Linux image which is known for being a small container. Unbound is also built with \`libevent\` which enables efficient handling of many concurrent connections. Using \`libevent\` with a higher value for \`outgoing-range\` improves concurrency for outgoing DNS queries, especially on multi-CPU machines
+
+\`\`\`dockerfile
+FROM alpine:latest AS builder
 RUN apk add --no-cache build-base git libevent-dev openssl-dev expat-dev flex bison
 
 
@@ -78,17 +75,17 @@ RUN git clone --branch release-1.24.1 https://github.com/NLnetLabs/unbound.git \
     && cd unbound \\
     && ./configure --with-libevent \\
     && make \\
-    && make install`}
-        </CodeBlock>
-        <ArticleBlock>
-          {`The build stage installs all the tools and libraries that we require to build Unbound. In the next stage we can just extract the output of the build and leave behind all the tooling we no longer need, resulting in a much smaller image.
-          
+    && make install
+\`\`\`
+
+The build stage installs all the tools and libraries that we require to build Unbound. In the next stage we can just extract the output of the build and leave behind all the tooling we no longer need, resulting in a much smaller image.
+
 #### Making it customisable
 
-Instead of making the entrypoint be Unbound directly, the entrypoint is a bash script that creates the Unbound configuration before starting it. This means that users can change some of the configurations using environment variables to tune the Unbound settings for their platform/requirements.`}
-        </ArticleBlock>
-        <CodeBlock language="dockerfile">
-          {`FROM alpine:latest
+Instead of making the entrypoint be Unbound directly, the entrypoint is a bash script that creates the Unbound configuration before starting it. This means that users can change some of the configurations using environment variables to tune the Unbound settings for their platform/requirements.
+
+\`\`\`dockerfile
+FROM alpine:latest
 
 RUN apk add --no-cache libevent openssl expat
 
@@ -105,7 +102,7 @@ ENV UNBOUND_NUM_THREADS=8 \\
     UNBOUND_CACHE_MAX_TTL=86400 \\
     UNBOUND_CACHE_MIN_TTL=300 \\
     UNBOUND_PREFETCH_KEY=yes \\
-    UNBOUND_OUTGOING_RANGE=8192 
+    UNBOUND_OUTGOING_RANGE=8192
 
 # Expose the DNS port
 EXPOSE 5335
@@ -115,13 +112,13 @@ RUN adduser -D -u 1000 unbound
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]`}
-        </CodeBlock>
-        <ArticleBlock>
-          {`The \`entrypoint.sh\` script writes out the config and then starts Unbound with the binary we compiled in the build phase:`}
-        </ArticleBlock>
-        <CodeBlock language="bash">
-          {`#!/bin/sh
+ENTRYPOINT ["/entrypoint.sh"]
+\`\`\`
+
+The \`entrypoint.sh\` script writes out the config and then starts Unbound with the binary we compiled in the build phase:
+
+\`\`\`bash
+#!/bin/sh
 set -e
 mkdir -p /etc/unbound/unbound.conf.d/
 
@@ -174,34 +171,33 @@ EOF
 
 # Start Unbound in the foreground
 exec /usr/local/sbin/unbound -d -c /etc/unbound/unbound.conf
-`}
-        </CodeBlock>
-        <ArticleBlock>
-          {`The majority of settings in the config are hardcoded as there isn't a strong need to change them for most use cases and they are sensible defaults from a security perspective. To accept queries from outside of the container we need to listen on all interfaces (\`0.0.0.0\`). While not normally recommended it is acceptable in this instance because we can control the networking of the container from the outside to limit access and avoid exposing the DNS to bad actors.
+\`\`\`
+
+The majority of settings in the config are hardcoded as there isn't a strong need to change them for most use cases and they are sensible defaults from a security perspective. To accept queries from outside of the container we need to listen on all interfaces (\`0.0.0.0\`). While not normally recommended it is acceptable in this instance because we can control the networking of the container from the outside to limit access and avoid exposing the DNS to bad actors.
 
 The configurable variables are mostly related to performance and DNS resolution behaviour (that isn't heavily security related).
 
 ## Running the container
 
-Now we have a container that we can build it's pretty easy to run it:`}
-        </ArticleBlock>
-        <CodeBlock language="yaml">
-          {`services:
+Now we have a container that we can build it's pretty easy to run it:
+
+\`\`\`yaml
+services:
   unbound:
     container_name: unbound
     image: owenelliottdev/unbound:latest
     ports:
       - "5335:5335/tcp"
       - "5335:5335/udp"
-    restart: unless-stopped`}
-        </CodeBlock>
-        <ArticleBlock>
-          {`Anything that sends DNS queries to unbound:5335 or localhost:5335 on the host machine will have their queries resolved by Unbound. This configuration makes Unbound accessible on the LAN. It's important that this port is not forwarded to the public internet; exposing our DNS would make us vulnerable to DNS amplification attacks and cache snooping.
+    restart: unless-stopped
+\`\`\`
 
-As I mentioned earlier, we can lock down our networking with Docker to make things more secure. If we run Unbound on a network in Docker then we can add other containers to that network to let them talk to Unbound without having to expose Unbound to the host machine.`}
-        </ArticleBlock>
-        <CodeBlock language="yaml">
-          {`services:
+Anything that sends DNS queries to unbound:5335 or localhost:5335 on the host machine will have their queries resolved by Unbound. This configuration makes Unbound accessible on the LAN. It's important that this port is not forwarded to the public internet; exposing our DNS would make us vulnerable to DNS amplification attacks and cache snooping.
+
+As I mentioned earlier, we can lock down our networking with Docker to make things more secure. If we run Unbound on a network in Docker then we can add other containers to that network to let them talk to Unbound without having to expose Unbound to the host machine.
+
+\`\`\`yaml
+services:
   unbound:
     container_name: unbound
     image: owenelliottdev/unbound:latest
@@ -211,13 +207,13 @@ As I mentioned earlier, we can lock down our networking with Docker to make thin
 
 networks:
   unbound_dns:
-    driver: bridge`}
-        </CodeBlock>
+    driver: bridge
+\`\`\`
 
-        <ArticleBlock>{`To integrate Unbound with Pi-Hole, your Docker Compose might look like this:`}</ArticleBlock>
+To integrate Unbound with Pi-Hole, your Docker Compose might look like this:
 
-        <CodeBlock language="yaml">
-          {`services:
+\`\`\`yaml
+services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
@@ -249,11 +245,11 @@ networks:
 
 networks:
   unbound_dns:
-    driver: bridge`}
-        </CodeBlock>
-        <ArticleBlock>
-          {`In the Pi-Hole admin console you then just need to set the DNS as \`unbound#5335\` (the \`#\` is the Pi-Hole syntax for the port).
-          
+    driver: bridge
+\`\`\`
+
+In the Pi-Hole admin console you then just need to set the DNS as \`unbound#5335\` (the \`#\` is the Pi-Hole syntax for the port).
+
 By running Unbound in Docker alongside Pi-Hole, you get a fast, secure, and private DNS resolver that's easy to manage. With a small, configurable container and proper network isolation, you can enjoy full control over your DNS while keeping your home network safe.`}
         </ArticleBlock>
       </div>

@@ -13,7 +13,8 @@ articleData.set('tiny-guestbook', {
   title: 'Building a Tiny Guestbook App with Rust and Scratch Containers',
   route: 'articles/tiny-guestbook',
   displayImageURL: '/article_assets/tiny-guestbook/hero.png',
-  summary: 'Building a small statically linked rust webserver for a guestbook app into a tiny multi-arch docker container.',
+  summary:
+    'Building a small statically linked rust webserver for a guestbook app into a tiny multi-arch docker container.',
   author: 'Owen Elliott',
   tags: 'Docker, self-hosting, rust',
 });

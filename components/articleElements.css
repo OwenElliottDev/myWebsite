@@ -82,10 +82,18 @@
 
 .article-code-block {
   margin-bottom: 10px;
+  white-space: normal;
 }
 
 .article-code-block pre {
   border-radius: 10px;
+}
+
+.article-code-block code {
+  color: inherit;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 
 .article-markdown table {
