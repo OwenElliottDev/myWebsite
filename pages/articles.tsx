@@ -7,15 +7,23 @@ type ArticleDisplayProps = {
   title: string;
   displayImageURL: string;
   summary: string;
+  tags: string;
 };
 
-const ArticleDisplay = ({ title, displayImageURL, summary }: ArticleDisplayProps) => {
+const ArticleDisplay = ({ title, displayImageURL, summary, tags }: ArticleDisplayProps) => {
   return (
     <div className={'article-list-element'}>
       <img src={displayImageURL} alt={title} />
       <div className="article-title-desc">
         <h3>{title}</h3>
         <p>{summary}</p>
+      </div>
+      <div className="article-list-tags">
+        {tags.split(', ').map((tag, index) => (
+          <span key={index} className="article-list-tag">
+            {tag}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -46,6 +54,7 @@ const Articles = () => {
               title={metadata.title}
               displayImageURL={metadata.displayImageURL}
               summary={metadata.summary}
+              tags={metadata.tags}
             />
           </Link>
         ))}
