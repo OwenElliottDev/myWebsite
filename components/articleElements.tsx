@@ -2,6 +2,7 @@ import React from 'react';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface CodeProps {
   language: string;
@@ -33,7 +34,7 @@ interface TextProps {
 export const ArticleBlock = ({ children }: TextProps) => {
   return (
     <div className="article-markdown">
-      <ReactMarkdown>{children}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
     </div>
   );
 };

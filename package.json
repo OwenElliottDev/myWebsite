@@ -29,6 +29,7 @@
     "react-redux": "^9.2.0",
     "react-syntax-highlighter": "^15.6.1",
     "redux-logger": "^3.0.6",
+    "remark-gfm": "^4.0.1",
     "trystero": "^0.21.5",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0"
