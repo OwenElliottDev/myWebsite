@@ -10,16 +10,13 @@
     "format": "npx prettier --write ."
   },
   "dependencies": {
-    "@next/font": "^14.2.15",
     "@reduxjs/toolkit": "^2.8.1",
     "@types/node": "^22.15.17",
-    "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "^9.26.0",
     "eslint-config-next": "^15.3.2",
     "libp2p": "^2.1.8",
     "multiformats": "^13.4.1",
     "next": "^15.3.2",
-    "next-redux-wrapper": "^8.1.0",
     "react": "^19.1.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.1.0",
@@ -27,7 +24,7 @@
     "react-intersection-observer": "^9.16.0",
     "react-markdown": "^10.1.0",
     "react-redux": "^9.2.0",
-    "react-syntax-highlighter": "^15.6.1",
+    "react-syntax-highlighter": "^16.1.0",
     "redux-logger": "^3.0.6",
     "remark-gfm": "^4.0.1",
     "trystero": "^0.21.5",
@@ -37,6 +34,7 @@
   "devDependencies": {
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "prettier": "3.5.3"
   }
 }

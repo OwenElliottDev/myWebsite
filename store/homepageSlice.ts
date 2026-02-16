@@ -37,7 +37,6 @@
 // export default homepageSlice.reducer;
 
 import { createSlice } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
 import { AppState } from './store';
 
 export interface HomeScreenState {
@@ -55,14 +54,6 @@ export const homepageSlice = createSlice({
     setIsCLI(state, action) {
       state.isCLI = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(HYDRATE, (state, action: any) => {
-      return {
-        ...state,
-        ...action.payload.home,
-      };
-    });
   },
 });
 

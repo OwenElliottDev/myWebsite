@@ -69,7 +69,6 @@
 // export default commandlineSlice.reducer;
 
 import { createSlice } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
 import { AppState } from './store';
 
 export interface CommandLineState {
@@ -107,14 +106,6 @@ export const commandlineSlice = createSlice({
     setUsername(state, action) {
       state.username = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(HYDRATE, (state, action: any) => {
-      return {
-        ...state,
-        ...action.payload.cli,
-      };
-    });
   },
 });
 
