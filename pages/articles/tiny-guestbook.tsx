@@ -6,7 +6,7 @@ const ArticleBlock = React.lazy(() =>
   import('@/components/articleElements').then((module) => ({ default: module.ArticleBlock })),
 );
 
-const HERO_IMAGE = '/article_assets/unbound-docker/hero.png';
+const HERO_IMAGE = '/article_assets/tiny-guestbook/hero.png';
 
 const Contemplation = () => {
   return (
@@ -39,6 +39,10 @@ I had some guests coming to stay and one of them is a fellow self-hoster. I thou
 Given the 'for fun' nature of the app I thought it'd be a good excuse to try and make the image small, these days I see many bloated containers and I find joy in trying to remove absolutely anything that is not needed from mine. I decided on Rust because it's fun but also because it is easy to make statically linked binaries, this is perfect for this application as it lets us use the \`scratch\` base "image" from Docker. I use quotes because \`scratch\` isn't really an image, it's technically a no-op which doesn't bring any files into your container, it doesn't even create a layer.
 
 This post covers how the app works at a high level and then goes deeper on the Dockerfile, multi-arch builds, and what it takes to run on \`FROM scratch\`.
+
+Here is the homepage of \`tiny-guestbook\`:
+
+![Tiny Guestbook](/article_assets/tiny-guestbook/hero.png)
 
 ## Quick overview of the app (backend)
 
