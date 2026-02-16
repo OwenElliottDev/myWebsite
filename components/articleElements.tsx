@@ -2,29 +2,7 @@ import React from 'react';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import ReactMarkdown from 'react-markdown';
-
-interface CodeProps {
-  language: string;
-  children: string;
-}
-
-export const CodeBlock = ({ language, children }: CodeProps) => {
-  return (
-    <div className="article-code-block">
-      <SyntaxHighlighter
-        language={language}
-        style={vscDarkPlus}
-        codeTagProps={{
-          style: {
-            fontSize: typeof window !== 'undefined' && window.innerWidth <= 768 ? '14px' : '16px',
-          },
-        }}
-      >
-        {children}
-      </SyntaxHighlighter>
-    </div>
-  );
-};
+import remarkGfm from 'remark-gfm';
 
 interface TextProps {
   children: string;
@@ -33,7 +11,44 @@ interface TextProps {
 export const ArticleBlock = ({ children }: TextProps) => {
   return (
     <div className="article-markdown">
-      <ReactMarkdown>{children}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          code({ className, children: codeChildren, ...props }) {
+            const match = /language-(\w+)/.exec(className || '');
+            if (match) {
+              return (
+                <div className="article-code-block">
+                  <SyntaxHighlighter
+                    language={match[1]}
+                    style={vscDarkPlus}
+                    codeTagProps={{
+                      style: {
+                        fontSize:
+                          typeof window !== 'undefined' && window.innerWidth <= 768
+                            ? '14px'
+                            : '16px',
+                      },
+                    }}
+                  >
+                    {String(codeChildren).replace(/\n$/, '')}
+                  </SyntaxHighlighter>
+                </div>
+              );
+            }
+            return (
+              <code className={className} {...props}>
+                {codeChildren}
+              </code>
+            );
+          },
+          pre({ children: preChildren }) {
+            return <>{preChildren}</>;
+          },
+        }}
+      >
+        {children}
+      </ReactMarkdown>
     </div>
   );
 };

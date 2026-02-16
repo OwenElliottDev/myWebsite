@@ -13,24 +13,35 @@ import '../components/articleElements.css';
 import '../components/appBar.css';
 import '../components/UISwitch.css';
 import type { AppProps } from 'next/app';
-import { wrapper } from '../store/store';
+import { store } from '../store/store';
 import AppBar from '@/components/appBar';
 import { Provider, useSelector } from 'react-redux';
 import { selectIsCLI } from '@/store/homepageSlice';
 import { useRouter } from 'next/router';
 
-function App({ Component, ...rest }: AppProps) {
-  const { store, props } = wrapper.useWrappedStore(rest);
-  const { pageProps } = props;
-
+function AppContent({
+  Component,
+  pageProps,
+}: {
+  Component: AppProps['Component'];
+  pageProps: any;
+}) {
   const isCLI = useSelector(selectIsCLI);
   const router = useRouter();
   return (
-    <Provider store={store}>
-      <AppBar hidden={isCLI && router.pathname == '/'}></AppBar>
+    <>
+      <AppBar hidden={isCLI && router.pathname == '/'} />
       <Component {...pageProps} />
+    </>
+  );
+}
+
+function App({ Component, pageProps }: AppProps) {
+  return (
+    <Provider store={store}>
+      <AppContent Component={Component} pageProps={pageProps} />
     </Provider>
   );
 }
 
-export default wrapper.withRedux(App);
+export default App;

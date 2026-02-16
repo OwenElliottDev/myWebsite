@@ -82,10 +82,41 @@
 
 .article-code-block {
   margin-bottom: 10px;
+  white-space: normal;
 }
 
 .article-code-block pre {
   border-radius: 10px;
+}
+
+.article-code-block code {
+  color: inherit;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.article-markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1vh;
+  white-space: normal;
+}
+
+.article-markdown th,
+.article-markdown td {
+  border: 1px solid #555;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.article-markdown th {
+  background-color: #2a2a2a;
+  font-weight: bold;
+}
+
+.article-markdown tr:nth-child(even) {
+  background-color: #2a2a2a;
 }
 
 .article blockquote {

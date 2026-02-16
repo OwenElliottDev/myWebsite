@@ -8,14 +8,14 @@ import projectData from '@/utils/projectData';
 const HomePage = () => {
   const latestArticles = Array.from(articleData.entries()).slice(0, 3);
   const latestPapers = Array.from(paperData.entries()).slice(0, 3);
-  const latestProjects = Array.from(projectData.entries()).slice(0, 3);
+  const latestProjects = Array.from(projectData.entries()).slice(0, 6);
 
   return (
     <div className="home-page">
       <section className="hero-section">
         <h1>Owen Elliott</h1>
         <p className="tagline">
-          Solutions Architect & ML Engineer specializing in Information Retrieval
+          Solutions Architect & ML Engineer specialising in Information Retrieval
         </p>
       </section>
 
@@ -72,7 +72,7 @@ const HomePage = () => {
                 <div className="paper-meta">
                   <span className="conference">{paper.conference}</span>
                   <span className="date">
-                    {new Date(paper.date).toLocaleDateString('en-US', {
+                    {new Date(paper.date).toLocaleDateString('en-GB', {
                       year: 'numeric',
                       month: 'short',
                     })}

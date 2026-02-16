@@ -2,12 +2,8 @@ import { HeroImage } from '@/components/articleElements';
 import Head from 'next/head';
 import React from 'react';
 
-// lazy load the ArticleBlock and CodeBlock components
 const ArticleBlock = React.lazy(() =>
   import('@/components/articleElements').then((module) => ({ default: module.ArticleBlock })),
-);
-const CodeBlock = React.lazy(() =>
-  import('@/components/articleElements').then((module) => ({ default: module.CodeBlock })),
 );
 
 const HERO_IMAGE = '/article_assets/ui-ux-vectorsearch/hero.webp';
@@ -65,12 +61,12 @@ While functional, this setup merely allows users to input queries and receive re
 
 Semantic filtering works by modifying the semantic representation of a query. Importantly, this can occur behind the scenes, abstracting complexity away from the user. These filters can be adjusted any time as they are purely semantic and do not rely on any additional metadata like traditional filtering does.
 
-This technique draws inspiration from the way zero-shot classification tasks are executed using CLIP models. [An example of this can be seen on OpenAI’s CLIP repo.](https://github.com/openai/CLIP/blob/main/notebooks/Prompt_Engineering_for_ImageNet.ipynb)
+This technique draws inspiration from the way zero-shot classification tasks are executed using CLIP models. [An example of this can be seen on OpenAI's CLIP repo.](https://github.com/openai/CLIP/blob/main/notebooks/Prompt_Engineering_for_ImageNet.ipynb)
 
-At its core, the approach is about enriching the user's query with additional descriptive language (part of the embedding model). This is reminiscent of prompt engineering techniques employed with generative image models. We achieve this by defining a dictionary that associates filters with specific prompt templates.`}
-        </ArticleBlock>
-        <CodeBlock language="python">
-          {`STYLE_MAPPING = {
+At its core, the approach is about enriching the user's query with additional descriptive language (part of the embedding model). This is reminiscent of prompt engineering techniques employed with generative image models. We achieve this by defining a dictionary that associates filters with specific prompt templates.
+
+\`\`\`python
+STYLE_MAPPING = {
     "stylized": "An image of a <QUERY> rendered in a unique, stylized manner",
     "cartoon": "An image in the style of Saturday morning cartoons featuring a <QUERY>",
     "abstract": "An image inspired by modern art, abstractly representing a <QUERY>",
@@ -88,15 +84,14 @@ At its core, the approach is about enriching the user's query with additional de
     "fantasy": "A fantastical, otherworldly image of a <QUERY>",
     "comic": "An image resembling a comic book panel, featuring a <QUERY>",
     "outline": "An outline line art depiction of a <QUERY>",
-}`}
-        </CodeBlock>
-        <ArticleBlock>
-          {`
+}
+\`\`\`
+
 In this setup, __\`<QUERY>\`__ is seamlessly replaced with the user's input query. This method allows us to filter search results based on image characteristics without relying on metadata.
 
 ![Example of vector search](/article_assets/ui-ux-vectorsearch/example3.gif)
 
-The example prompts above were crafted with the help of Open AI’s ChatGPT (based on the gpt generative ai large language model), proving its efficacy for such tasks.
+The example prompts above were crafted with the help of Open AI's ChatGPT (based on the gpt generative ai large language model), proving its efficacy for such tasks.
 
 This concept can be extended in many directions such as style based filtering for fashion trends or interior design. It can also be used to control the type and quality of results that are surfaced from search queries. Prompting can be used to modify or expand the query without the users knowledge, for example if your dataset has many images of dubious quality then the query can be prefixed with a string like "high quality professional photo of" to improve the quality of the results.
 
@@ -106,25 +101,21 @@ Why confine ourselves to just one search bar? Vectors encapsulate the semantic e
 ### More of This? Less of That? Search Refinement Mechanisms
 We've showcased this approach on our demo for quite some time. Beyond the conventional search bar, we've incorporated two supplementary text input fields. These allow users to amplify or diminish specific aspects of their query. To implement this element the search terms from the three bars are combined in the backend via a weighted average. The negative term is given a large negative weight in order to steer the results away from that part of the vector space. The positive search term is modified by prepending the main search term to it, this helps keep the search aligned with the main query and avoids having results that might match the main query and positive term independently.
 
-`}
-        </ArticleBlock>
-        <CodeBlock language="python">
-          {`query = {
+\`\`\`python
+query = {
     "shoes": 1.0,
     "shoes, mens business": 0.6,
     "lacers": -1.1
 }
-`}
-        </CodeBlock>
-        <ArticleBlock>
-          {`
+\`\`\`
+
 ![Example of vector search](/article_assets/ui-ux-vectorsearch/example4.gif)
 
 While the ability to add or negate terms might be absent in traditional search engines, for vector search, it's an intrinsic feature, amplifying its potency and adaptability.
 
 ## Personalisation through Vector Search
 ### Search as a Recommender
-Vector search paves the way for content recommendations without the need for external systems like collaborative filtering or heuristic-based recommenders (or the pain of productizing “traditional” machine learning models). Additional query terms or vectors of existing documents in the index can be harnessed as query expansion terms, steering search results towards analogous items.
+Vector search paves the way for content recommendations without the need for external systems like collaborative filtering or heuristic-based recommenders (or the pain of productizing "traditional" machine learning models). Additional query terms or vectors of existing documents in the index can be harnessed as query expansion terms, steering search results towards analogous items.
 
 Recommendations can be broadly categorised into two types:
 

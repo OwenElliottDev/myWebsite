@@ -4,52 +4,111 @@
   margin-bottom: 20px;
 }
 
+.papers-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 10px;
+}
+
 .paper-list-element {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  background-color: #0a121c;
+  background-color: #0f1923;
+  border: 1px solid #2a3444;
   padding: 20px;
   border-radius: 10px;
-  margin: 10px;
-  align-items: center;
-  transition: all 0.4s ease-in-out;
+  align-items: flex-start;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.paper-list-element:hover {
+  box-shadow: 0 4px 12px rgba(100, 120, 200, 0.15);
 }
 
 .paper-list-element img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  background-color: #ffffff;
-  border-radius: 10px;
+  background-color: #1a2433;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .paper-title-abstract h3 {
   font-size: 20px;
   margin: 0;
+  color: #ddd;
 }
 
 .paper-title-abstract p {
-  font-size: 16px;
+  font-size: 0.95rem;
   margin-top: 10px;
   margin-bottom: 0px;
-  color: #cccccc;
+  color: #999;
+  line-height: 1.5;
 }
 
 .paper-title-abstract button {
-  font-size: 16px;
+  font-size: 0.85rem;
   margin-top: 10px;
-  padding: 5px 10px;
+  padding: 5px 14px;
   border-radius: 50px;
-  background-color: #1f2937;
-  color: #cccccc;
+  background-color: #2a3444;
+  color: #ccc;
   border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.paper-title-abstract button:hover {
+  background-color: #667eea;
+  color: white;
 }
 
 .paper-meta {
   padding-top: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.paper-meta span {
+  color: #999;
+}
+
+.paper-meta a {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  background: #2a3444;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #ccc;
+  font-size: 0.85rem;
+  transition: background 0.3s;
+}
+
+.paper-meta a:hover {
+  background: #667eea;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .paper-list-element {
+    flex-direction: column;
+  }
+
+  .paper-list-element img {
+    width: 100%;
+    height: 180px;
+  }
 }
