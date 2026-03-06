@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectIsCLI } from '@/store/homepageSlice';
+import UISwitch from './UISwitch';
 
 interface AppBarElementData {
   text: string;
@@ -40,6 +43,7 @@ type AppBarProps = {
 
 const AppBar = ({ hidden }: AppBarProps) => {
   const router = useRouter();
+  const isCLI = useSelector(selectIsCLI);
   const [appBarClass, setAppBarClass] = useState(hidden ? 'app-bar-hide' : 'app-bar-show');
   const [isArticle, setIsArticle] = useState(false);
 
@@ -61,12 +65,21 @@ const AppBar = ({ hidden }: AppBarProps) => {
 
   return (
     <div className="app-bar">
-      <div className={`${appBarClass} ${isArticle ? 'app-bar-article' : ''}`}>
-        {appBarElements.map((el, i) => {
-          return (
-            <AppBarElement text={el.text} link={el.link} isArticle={isArticle} key={i.toString()} />
-          );
-        })}
+      <div
+        className={`${appBarClass} ${isArticle ? 'app-bar-article' : ''} ${isCLI ? 'app-bar-cli' : ''}`}
+      >
+        {!isCLI &&
+          appBarElements.map((el, i) => {
+            return (
+              <AppBarElement
+                text={el.text}
+                link={el.link}
+                isArticle={isArticle}
+                key={i.toString()}
+              />
+            );
+          })}
+        <UISwitch />
       </div>
     </div>
   );

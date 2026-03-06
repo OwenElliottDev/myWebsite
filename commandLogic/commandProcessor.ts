@@ -64,7 +64,10 @@ function processCommand({
   let commandParts = command.split(' ');
 
   if (commandParts[0] == 'cd') {
-    if (commandParts.length < 2) return 'Please provide a directory';
+    if (commandParts.length < 2) {
+      updateBiscuitCrumbs(['']);
+      return '';
+    }
     let attemptedDir = commandParts[1];
     if (attemptedDir == '..') {
       let tmpCrumbs = [...dirBiscuitCrumbs];

@@ -4,7 +4,6 @@ import styles from '@/styles/Home.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectIsCLI, setIsCLI } from '@/store/homepageSlice';
-import UISwitch from '@/components/UISwitch';
 import { CommandLine } from '@/components/commandline';
 import HomePage from '@/components/HomePage';
 
@@ -29,9 +28,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={'render-controls'}>
-          <UISwitch />
-        </div>
         {isCLI ? (
           <CommandLine />
         ) : (

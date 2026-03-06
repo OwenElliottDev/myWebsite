@@ -16,9 +16,7 @@ import '../components/UISwitch.css';
 import type { AppProps } from 'next/app';
 import { store } from '../store/store';
 import AppBar from '@/components/appBar';
-import { Provider, useSelector } from 'react-redux';
-import { selectIsCLI } from '@/store/homepageSlice';
-import { useRouter } from 'next/router';
+import { Provider } from 'react-redux';
 
 function AppContent({
   Component,
@@ -27,11 +25,9 @@ function AppContent({
   Component: AppProps['Component'];
   pageProps: any;
 }) {
-  const isCLI = useSelector(selectIsCLI);
-  const router = useRouter();
   return (
     <>
-      <AppBar hidden={isCLI && router.pathname == '/'} />
+      <AppBar hidden={false} />
       <Component {...pageProps} />
     </>
   );

@@ -16,28 +16,6 @@ body {
   white-space: pre-wrap;
 }
 
-@media screen and (orientation: portrait) {
-  .render-controls {
-    position: absolute;
-    text-align: right;
-    top: 65px;
-    right: 0px;
-    font-size: 14px;
-    padding-bottom: 15px;
-    padding-right: 15px;
-  }
-}
-@media screen and (orientation: landscape) {
-  .render-controls {
-    position: absolute;
-    text-align: right;
-    top: 0px;
-    right: 0px;
-    padding-top: 5px;
-    padding-right: 5px;
-  }
-}
-
 .loading-icon {
   position: fixed;
   top: 50%;
