@@ -17,6 +17,7 @@
     "libp2p": "^2.1.8",
     "multiformats": "^13.4.1",
     "next": "^16.1.6",
+    "raw-loader": "^4.0.2",
     "react": "^19.1.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.1.0",
